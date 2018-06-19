@@ -1,5 +1,5 @@
 /* FLAPPY BIRD GAME
-  please, dont be so critic with the graphs, its just a game! ;)
+  please, don't be so critical with the graphs, it's just a game! ;)
   ENJOY!
   
   BY Ignacio Laviña (Uco)
@@ -39,14 +39,11 @@ void setup() {
   bkg_img.resize(width, height);
   
   bird = new Bird();
-  
-
+  //Pipes creation
   for (int i = 0; i<max_pipes; i++){
     pipes[i] = new Pipe(initial_pipe_x);
     initial_pipe_x += (width+40)/max_pipes;
   }
-  
-  
 }
 
 
@@ -55,6 +52,7 @@ void draw(){
     imageMode(CORNER);
     image(startImg, 0, 0);
     textAlign(CENTER);
+    text("WELCOME!" + high_score, width/2, height/2 - 50);    
     text("High Score: " + high_score, width/2, height/2);    
     text("Press ENTER to start " + high_score, width/2, height/2 + 50);
     
