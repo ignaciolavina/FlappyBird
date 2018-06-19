@@ -1,14 +1,23 @@
+/* FLAPPY BIRD GAME
+  please, dont be so critic with the graphs, its just a game! ;)
+  ENJOY!
+  
+  BY Ignacio Laviña (Uco)
+*/
+
+
 PImage bkg_img;
 PImage startImg;
 
-static int WIDTH = 800;
-static int HEIGHT = 600;
+//static int WIDTH = 800;
+//static int HEIGHT = 600;
+static int SPACE = 230; //Space inside pipes to pass
 
 int pos_background = 0;
 int vel_background = 2;
 
 public enum GameState {WELCOME, GAME};  // Different states of the game
-GameState game_state = GameState.GAME;
+GameState game_state = GameState.WELCOME;
 
 Bird bird;
 
@@ -17,7 +26,7 @@ int high_score = 0;
 
 int max_pipes = 3;
 Pipe [] pipes = new Pipe [max_pipes];
-int space = 600;
+int initial_pipe_x = 600; 
   
 void setup() {
   size(800,600);
@@ -33,8 +42,8 @@ void setup() {
   
 
   for (int i = 0; i<max_pipes; i++){
-    pipes[i] = new Pipe(space);
-    space += (width+40)/max_pipes;
+    pipes[i] = new Pipe(initial_pipe_x);
+    initial_pipe_x += (width+40)/max_pipes;
   }
   
   
@@ -53,21 +62,18 @@ void draw(){
     //game_state = GAME
     
     //Background stuff and movement
-    image(bkg_img, pos_background, 0);
-    
+    imageMode(CORNER);    
+    image(bkg_img, pos_background, 0);    
     image(bkg_img, pos_background + bkg_img.width, 0);   
     pos_background -= vel_background;
-    if(pos_background <= - bkg_img.width)
+    if(pos_background <= - bkg_img.width){
       pos_background = 0;
-
+    }
     
     imageMode(CENTER);
-    bird.draw();
     
     for (int i = 0; i<max_pipes; i++){
       Pipe pipe = pipes[i];
-      int pipe_x = pipe.x;
-      int pipe_y = pipe.y;
       pipe.draw();
       
       //SCORE
@@ -79,22 +85,18 @@ void draw(){
       if ((bird.y < 0) || (bird.y > width)){
         restart();
       }
+      
+      //CRASH WITH PIPES
       if(bird.x >=pipe.x - pipe.pipe_img.width/2 && bird.x <= pipe.x + pipe.pipe_img.width/2){
-        imageMode(CENTER);
-        int diff = abs(bird.y - pipes[i].y);
-        println("DIFF: " + diff);
-        //println("bird.y: " + bird.y + " pipes arriba: " + (pipes[i].y - pipes[i].SPACE/2) + ", pipes abajo" + (pipes[i].y + pipes[i].SPACE/2));
-        if(abs(bird.y - pipes[i].y) > pipes[i].SPACE/2 - bird.birdImg.height/2){
-          print("pipes[i].y "+ (pipes[i].y  + space/2) + ",bird.y " + bird.y);
+        if(abs(bird.y - pipes[i].y) > SPACE/2 - bird.birdImg.height/2){
           restart();
-        }
-        
+        }        
       }
-
-    }
-    imageMode(CORNER);    
-    text(score, 50, 50);
+    }//end pipes loop
     
+    bird.draw();
+    
+    text(score, 50, 50);    
   }
 }
 //works upper pipe crash
@@ -110,11 +112,10 @@ public void restart(){
 }
 
 public void resetPipes(){
-  space = 600;
+  initial_pipe_x = 600;
   for (int i = 0; i<max_pipes; i++){
-    pipes[i] = new Pipe(space);
-    space += (width+40)/max_pipes;
-
+    pipes[i] = new Pipe(initial_pipe_x);
+    initial_pipe_x += (width+40)/max_pipes;
   }
 }
 
@@ -122,17 +123,16 @@ void keyPressed(){
  
     if(key == ENTER){
       game_state = GameState.GAME;
-      //bird.reset();
-      //pipe.reset();
-    }    
-     if(key == ' '){
-       //println("jump: " + bird.y);
+    }
+    
+    if(key == ' '){
        bird.jump();
     }  
     if(key == 'r' || key == 'R'){
        game_state = GameState.WELCOME;
     }
-        if ( key == CODED){
+    /* TEST CODE
+    if ( key == CODED){
       switch(keyCode){
        case LEFT:
           break;
@@ -145,5 +145,5 @@ void keyPressed(){
        bird.y +=5;
           break; 
       }
-    }
+    }*/
   }

@@ -1,17 +1,15 @@
 class Bird{
- PImage birdImg;
   
- int x;
- int y;
- int velocity = 0;
+   PImage birdImg;    
+   int x, y;
+   int velocity = 0;
   
- public Bird(){   
-  birdImg =loadImage("./assets/bird.jpg");
-  birdImg.resize(50,50);
-  x = 200;
-  y = 200;
- 
- }
+  public Bird(){   
+      birdImg =loadImage("./assets/birdo.png");
+      birdImg.resize(50,50);
+      x = 200;
+      y = 200; 
+  }
   
   public void draw(){
       update();
@@ -25,13 +23,12 @@ class Bird{
   }
   
   public void jump(){
-    velocity = -17   ;
+    velocity = -17;
   }
   
   public void reset(){
      this.y = 200; 
      this.velocity = 0;
   }
-    
-    
+  
 }
