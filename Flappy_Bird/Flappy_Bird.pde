@@ -16,7 +16,7 @@ static int SPACE = 230; //Space inside pipes to pass
 int pos_background = 0;
 int vel_background = 2;
 
-public enum GameState {WELCOME, GAME};  // Different states of the game
+public enum GameState {WELCOME, GAME, GAMEOVER};  // Different states of the game
 GameState game_state = GameState.WELCOME;
 
 Bird bird;
@@ -48,53 +48,63 @@ void setup() {
 
 
 void draw(){
-  if(game_state == GameState.WELCOME){
-    imageMode(CORNER);
-    image(startImg, 0, 0);
-    textAlign(CENTER);
-    text("WELCOME!" + high_score, width/2, height/2 - 50);    
-    text("High Score: " + high_score, width/2, height/2);    
-    text("Press ENTER to start " + high_score, width/2, height/2 + 50);
-    
-  }else{
-    //game_state = GAME
-    
-    //Background stuff and movement
-    imageMode(CORNER);    
-    image(bkg_img, pos_background, 0);    
-    image(bkg_img, pos_background + bkg_img.width, 0);   
-    pos_background -= vel_background;
-    if(pos_background <= - bkg_img.width){
-      pos_background = 0;
-    }
-    
-    imageMode(CENTER);
-    
-    for (int i = 0; i<max_pipes; i++){
-      Pipe pipe = pipes[i];
-      pipe.draw();
+  switch(game_state){
+    case WELCOME:
+      imageMode(CORNER);
+      image(startImg, 0, 0);
+      textSize(15);
+      textAlign(CORNER);
+      text("Made with love by Uco", width-200, height-50);
       
-      //SCORE
-      if(bird.x == pipe.x){
-        score++;
+      textAlign(CENTER);
+      textSize(40);
+      text("WELCOME TO UKKI BIRD!", width/2, height/2 - 50);    
+      text("High Score: " + high_score, width/2, height/2);    
+      text("Press ENTER to start " + high_score, width/2, height/2 + 50);
+
+    break;
+    case GAME:
+      //Background stuff and movement
+      imageMode(CORNER);    
+      image(bkg_img, pos_background, 0);    
+      image(bkg_img, pos_background + bkg_img.width, 0);   
+      pos_background -= vel_background;
+      if(pos_background <= - bkg_img.width){
+        pos_background = 0;
       }
       
-      //CRASH WITH ROOF OR FLOOR
-      if ((bird.y < 0) || (bird.y > width)){
-        restart();
-      }
+      imageMode(CENTER);
       
-      //CRASH WITH PIPES
-      if(bird.x >=pipe.x - pipe.pipe_img.width/2 && bird.x <= pipe.x + pipe.pipe_img.width/2){
-        if(abs(bird.y - pipes[i].y) > SPACE/2 - bird.birdImg.height/2){
+      //Pipes iteration
+      for (int i = 0; i<max_pipes; i++){
+        Pipe pipe = pipes[i];
+        pipe.draw();
+        
+        //SCORE
+        if(bird.x == pipe.x){
+          score++;
+        }
+        
+        //CRASH WITH ROOF OR FLOOR
+        if ((bird.y < 0) || (bird.y > width)){
           restart();
-        }        
-      }
-    }//end pipes loop
-    
-    bird.draw();
-    
-    text(score, 50, 50);    
+        }
+        
+        //CRASH WITH PIPES
+        if(bird.x >=pipe.x - pipe.pipe_img.width/2 && bird.x <= pipe.x + pipe.pipe_img.width/2){
+          if(abs(bird.y - pipes[i].y) > SPACE/2 - bird.birdImg.height/2){
+            restart();
+          }        
+        }
+      }//end pipes loop
+      bird.draw();
+      text(score, 50, 50);
+     break;
+     case GAMEOVER:
+     
+     
+     
+     break;
   }
 }
 //works upper pipe crash

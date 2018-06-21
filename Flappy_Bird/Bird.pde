@@ -1,6 +1,7 @@
 class Bird{
   
-   PImage birdImg;    
+   PImage birdImg;
+   PImage crashed_bird_img; 
    int x, y;
    int velocity = 0;
   
