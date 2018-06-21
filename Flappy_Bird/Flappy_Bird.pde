@@ -60,7 +60,7 @@ void draw(){
       textSize(40);
       text("WELCOME TO UKKI BIRD!", width/2, height/2 - 50);    
       text("High Score: " + high_score, width/2, height/2);    
-      text("Press ENTER to start " + high_score, width/2, height/2 + 50);
+      text("Press ENTER to start ", width/2, height/2 + 50);
 
     break;
     case GAME:
@@ -92,8 +92,9 @@ void draw(){
         
         //CRASH WITH PIPES
         if(bird.x >=pipe.x - pipe.pipe_img.width/2 && bird.x <= pipe.x + pipe.pipe_img.width/2){
-          if(abs(bird.y - pipes[i].y) > SPACE/2 - bird.birdImg.height/2){
-            restart();
+          if(abs(bird.y - pipes[i].y) > SPACE/2 - bird.birdImg.height/2){            
+            bird.crash(); 
+            game_state = GameState.GAMEOVER;
           }        
         }
       }//end pipes loop
@@ -101,8 +102,10 @@ void draw(){
       text(score, 50, 50);
      break;
      case GAMEOVER:
-     
-     
+      
+      text("GAMEOVER", width/2, height/2 - 50);      
+      text("score: " + score, width/2, height/2);
+      text("Press ENTER to restart ", width/2, height/2 + 50);
      
      break;
   }
@@ -130,14 +133,21 @@ public void resetPipes(){
 void keyPressed(){   
  
     if(key == ENTER){
+      
+         restart(); 
       game_state = GameState.GAME;
+      if(game_state == GameState.WELCOME){
+         
+        
+      }else{
+      }
     }
     
     if(key == ' '){
        bird.jump();
     }  
     if(key == 'r' || key == 'R'){
-       game_state = GameState.WELCOME;
+        restart();    
     }
     /* TEST CODE
     if ( key == CODED){
