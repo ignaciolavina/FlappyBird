@@ -99,7 +99,7 @@ void draw(){
         }
       }//end pipes loop
       bird.draw();
-      text(score, 50, 50);
+      text("Score: " + score, 130, 50);
      break;
      case GAMEOVER:
       
